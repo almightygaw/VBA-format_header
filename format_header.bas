@@ -3,31 +3,20 @@ Sub format_header()
 Attribute format_header.VB_ProcData.VB_Invoke_Func = "w\n14"
 
     Application.ScreenUpdating = False
-
-' autofit columns, set font, font size
-    Dim i As Range
-    Dim maxWidth As Integer
-    maxWidth = 50  ' set maxWidth = 50
-
-    For Each i In ActiveSheet.UsedRange.Rows(1).Cells
-        i.EntireColumn.Font.Name = "Calibri"
-        i.EntireColumn.Font.Size = 11
-        i.EntireColumn.AutoFit
-        If i.EntireColumn.ColumnWidth > maxWidth _
-            Then i.EntireColumn.ColumnWidth = maxWidth
-    Next i
     
-' autofit row height
-    Dim j As Range
-    Dim maxHeight As Integer
-    maxHeight = 15 ' set maxHeight = 15
+' clear existing formatting
+    With ActiveSheet.UsedRange
+      Selection.Interior.Color = xlNone
+      Selection.Borders.LineStyle = xlNone
+    End With
     
-    For Each j In ActiveSheet.UsedRange.Cells
-    j.EntireRow.AutoFit
-        If j.EntireRow.RowHeight > maxHeight _
-            Then j.EntireRow.RowHeight = maxHeight
-    Next j
-        
+' set font, font size, font style
+    With ActiveSheet.UsedRange.Font
+      .Name = "Calibri"
+      .Color = vbBlack
+      .Size = 11
+    End With
+      
 ' highlight, bold, center header row
     Dim k As Range
     
@@ -41,7 +30,20 @@ Attribute format_header.VB_ProcData.VB_Invoke_Func = "w\n14"
 ' freeze header row
     Rows("2:2").Select
     ActiveWindow.FreezePanes = True
+
+' autofit columns, set font, font size
+    ActiveSheet.UsedRange.Columns.AutoFit
+  
+' autofit row height
+    ActiveSheet.UsedRange.Rows.AutoFit
     
+' border UsedRange
+    With ActiveSheet.UsedRange.Borders
+      .LineStyle = xlContinuous
+      .Color = vbBlack
+      .Weight = xlThin
+    End With
+       
     Range("A1").Select
     
     Application.ScreenUpdating = True
